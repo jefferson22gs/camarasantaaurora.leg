@@ -1,0 +1,37 @@
+import type { AuditLog, Notification } from '@/types'
+
+export const notificationsSeed: Notification[] = [
+  { id: 'nt_01', title: 'Convocação para sessão', message: 'Sessão Ordinária nº 15/2026 convocada para 06/10/2026 às 19:00.', category: 'session', createdAt: '2026-10-03T15:05:00.000Z', link: '/admin/sessoes/ss_ord_15', targetRoles: [], readBy: [] },
+  { id: 'nt_02', title: 'Pauta publicada', message: 'A pauta da Sessão Ordinária nº 15/2026 foi publicada com 4 itens.', category: 'session', createdAt: '2026-10-03T15:00:00.000Z', link: '/admin/pautas', targetRoles: [], readBy: [] },
+  { id: 'nt_03', title: 'Novo projeto cadastrado', message: 'Indicação nº 088/2026 protocolada pela Ver. Fernanda Costa.', category: 'proposition', createdAt: '2026-10-02T13:20:00.000Z', link: '/admin/proposicoes/pp_ind088', targetRoles: ['admin', 'secretariat', 'presidency'], readBy: [] },
+  { id: 'nt_04', title: 'Projeto distribuído ao relator', message: 'PL 028/2026 distribuído ao Ver. Paulo Mendes (CCJR).', category: 'proposition', createdAt: '2026-09-28T17:42:00.000Z', link: '/admin/proposicoes/pp_pl028', targetRoles: ['admin', 'secretariat', 'committee'], readBy: [] },
+  { id: 'nt_05', title: 'Parecer emitido', message: 'CESAS emitiu parecer favorável ao PL 026/2026.', category: 'proposition', createdAt: '2026-09-26T19:10:00.000Z', link: '/admin/proposicoes/pp_pl026', targetRoles: [], readBy: ['usr_admin'] },
+  { id: 'nt_06', title: 'Resultado disponível', message: 'PL 024/2026 aprovado na Sessão Ordinária nº 14/2026 (10 SIM, 0 NÃO, 1 abstenção).', category: 'voting', createdAt: '2026-09-29T22:32:00.000Z', link: '/transparencia/votacoes', targetRoles: [], readBy: ['usr_admin'] },
+  { id: 'nt_07', title: 'Pendência de manifestação', message: 'Prazo do parecer da CCJR sobre o PLC 004/2026 vence em 3 dias.', category: 'proposition', createdAt: '2026-09-20T12:00:00.000Z', link: '/admin/pareceres', targetRoles: ['admin', 'committee', 'secretariat'], readBy: [] },
+  { id: 'nt_08', title: 'Alteração da pauta', message: 'Moção nº 018/2026 incluída na pauta da Sessão Ordinária nº 15/2026.', category: 'session', createdAt: '2026-10-01T18:30:00.000Z', link: '/admin/pautas', targetRoles: [], readBy: [] },
+  { id: 'nt_09', title: 'Backup concluído', message: 'Rotina de backup diário executada com sucesso (simulação).', category: 'system', createdAt: '2026-10-06T06:00:00.000Z', targetRoles: ['admin'], readBy: [] },
+  { id: 'nt_10', title: 'Projeto encaminhado', message: 'PR 006/2026 encaminhado à Comissão Especial de Revisão do Regimento Interno.', category: 'proposition', createdAt: '2026-09-03T14:10:00.000Z', link: '/admin/proposicoes/pp_pr006', targetRoles: [], readBy: ['usr_admin', 'usr_sec'] },
+]
+
+const log = (o: Omit<AuditLog, 'device' | 'ip' | 'origin'> & Partial<Pick<AuditLog, 'device' | 'ip' | 'origin'>>): AuditLog => ({
+  origin: 'web',
+  device: 'Chrome 129 · Windows 11',
+  ip: '10.20.1.15',
+  ...o,
+})
+
+export const auditLogsSeed: AuditLog[] = [
+  log({ id: 'au_01', at: '2026-09-29T22:30:40.000Z', userId: 'usr_cv_02', userName: 'Ana Carolina Souza', role: 'councilor', operation: 'Registro de voto', module: 'voting', recordId: 'vt_14_1', recordLabel: 'PL 024/2026', origin: 'tablet', details: 'Voto: SIM · Sessão: Ordinária nº 14/2026', after: 'Voto registrado (VOT-2026-000150)', device: 'Tablet Plenário 02', ip: '10.20.5.102' }),
+  log({ id: 'au_02', at: '2026-09-29T22:30:00.000Z', userId: 'usr_pres', userName: 'João Martins', role: 'presidency', operation: 'Abertura de votação', module: 'voting', recordId: 'vt_14_1', recordLabel: 'PL 024/2026', details: 'Votação nominal · Maioria simples · 120 s', before: 'Item em discussão', after: 'Votação aberta', device: 'Mesa Diretora · Edge 129', ip: '10.20.5.10' }),
+  log({ id: 'au_03', at: '2026-09-29T22:32:00.000Z', userId: 'usr_pres', userName: 'João Martins', role: 'presidency', operation: 'Encerramento de votação', module: 'voting', recordId: 'vt_14_1', recordLabel: 'PL 024/2026', details: 'Resultado: APROVADO (10 SIM, 0 NÃO, 1 ABSTENÇÃO)', before: 'Votação aberta', after: 'Votação encerrada — APROVADO', device: 'Mesa Diretora · Edge 129', ip: '10.20.5.10' }),
+  log({ id: 'au_04', at: '2026-10-02T13:20:00.000Z', userId: 'usr_sec', userName: 'Sérgio Antunes Moreira', role: 'secretariat', operation: 'Cadastro de proposição', module: 'propositions', recordId: 'pp_ind088', recordLabel: 'IND 088/2026', details: 'Protocolo 20260888', after: 'Situação: Protocolada' }),
+  log({ id: 'au_05', at: '2026-10-03T15:00:00.000Z', userId: 'usr_sec', userName: 'Sérgio Antunes Moreira', role: 'secretariat', operation: 'Publicação de pauta', module: 'agendas', recordId: 'ag_ord_15', recordLabel: 'Pauta — Ordinária nº 15/2026', details: '4 itens publicados', before: 'Rascunho', after: 'Publicada' }),
+  log({ id: 'au_06', at: '2026-10-06T22:00:00.000Z', userId: 'usr_pres', userName: 'João Martins', role: 'presidency', operation: 'Abertura de sessão', module: 'sessions', recordId: 'ss_ord_15', recordLabel: 'Ordinária nº 15/2026', details: 'Sessão aberta com 11 vereadores presentes', before: 'Agendada', after: 'Aberta', device: 'Mesa Diretora · Edge 129', ip: '10.20.5.10' }),
+  log({ id: 'au_07', at: '2026-10-06T21:55:12.000Z', userId: 'usr_sec', userName: 'Sérgio Antunes Moreira', role: 'secretariat', operation: 'Justificativa de ausência', module: 'attendance', recordId: 'at_ss_ord_15_cv_06', recordLabel: 'Fernanda Costa — Ordinária nº 15/2026', details: 'Atestado médico apresentado à Secretaria.', before: 'Não registrado', after: 'Ausência justificada' }),
+  log({ id: 'au_08', at: '2026-10-06T11:12:00.000Z', userId: 'usr_admin', userName: 'Helena Duarte Vasconcelos', role: 'admin', operation: 'Login', module: 'auth', recordLabel: 'Sessão de usuário', details: 'Autenticação bem-sucedida' }),
+  log({ id: 'au_09', at: '2026-09-28T17:42:00.000Z', userId: 'usr_com', userName: 'Beatriz Lemos Arantes', role: 'committee', operation: 'Distribuição ao relator', module: 'processes', recordId: 'pp_pl028', recordLabel: 'PL 028/2026', details: 'Relator: Paulo Mendes (CCJR)', before: 'Comissão', after: 'Parecer em elaboração' }),
+  log({ id: 'au_10', at: '2026-09-26T19:10:00.000Z', userId: 'usr_com', userName: 'Beatriz Lemos Arantes', role: 'committee', operation: 'Emissão de parecer', module: 'opinions', recordId: 'op_pp_pl026_cm_ess', recordLabel: 'PL 026/2026 — CESAS', details: 'Conclusão: Favorável', before: 'Em elaboração', after: 'Concluído' }),
+  log({ id: 'au_11', at: '2026-09-15T09:00:00.000Z', userId: 'usr_admin', userName: 'Helena Duarte Vasconcelos', role: 'admin', operation: 'Alteração de configuração', module: 'settings', recordLabel: 'Regra do Presidente', details: 'Modo de voto do Presidente alterado', before: 'Vota normalmente', after: 'Vota apenas em situações específicas' }),
+  log({ id: 'au_12', at: '2026-09-24T21:05:00.000Z', userId: 'usr_sec', userName: 'Sérgio Antunes Moreira', role: 'secretariat', operation: 'Registro de impedimento', module: 'voting', recordId: 'im_01', recordLabel: 'João Martins — PDL 003/2026', details: 'Suspeição declarada pelo vereador', after: 'Impedido' }),
+  log({ id: 'au_13', at: '2026-09-15T12:30:00.000Z', userId: 'system', userName: 'Sistema', role: 'system', operation: 'Cancelamento de sessão', module: 'sessions', recordId: 'ss_ord_12', recordLabel: 'Ordinária nº 12/2026', origin: 'system', details: 'Ponto facultativo decretado pelo Executivo', before: 'Agendada', after: 'Cancelada', device: 'Servidor de aplicação', ip: '—' }),
+]
